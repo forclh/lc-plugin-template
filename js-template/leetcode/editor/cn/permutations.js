@@ -5,56 +5,46 @@
  * [46] 全排列
  */
 
-import { use } from "react";
 import { ListNode } from "../common/listNode.js";
 import { TreeNode } from "../common/treeNode.js";
 
 // @lc code=start
 /**
- * v1 回溯算法
+ * v2 回溯算法(swap)
  * @param {number[]} nums
  * @return {number[][]}
  */
 let permute = function (nums) {
   let result = []; // 结果列表
 
-  let track = []; //记录路径
-  let used = new Array(nums.length).fill(false); // 选择列表（配合num）
-
-  function backtrack(track, used) {
-    // 路径：记录在 track 中
-    // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
-    // 结束条件：nums 中的元素全都在 track 中出现
-    if (track.length === nums.length) {
-      // 触发结束条件
-      result.push([...track]); // 注意点: 传递的值是地址引用
+  function backtrack(start) {
+    if (start === nums.length) {
+      result.push([...nums]);
       return;
     }
-
-    for (let i = 0; i < nums.length; i++) {
-      if (used[i]) {
-        continue;
-      }
-      // 前序位置
+    // 盒的视角(start位置表示当前的盒子)
+    for (let i = start; i < nums.length; i++) {
       // 做选择
-      track.push(nums[i]);
-      used[i] = true;
+      swap(nums, start, i);
       // 进入下一层决策树
-      backtrack(track, used);
-      // 后序位置
+      backtrack(start + 1);
       // 撤销当前选择
-      track.pop();
-      used[i] = false;
+      swap(nums, start, i);
     }
   }
 
-  backtrack(track, used);
+  function swap(nums, i, j) {
+    [nums[i], nums[j]] = [nums[j], nums[i]];
+  }
+
+  backtrack(0);
+
   return result;
 };
 // @lc code=end
 
 // your test code here
-
+permute([1, 2, 3]);
 /*
 // @lcpr case=start
 // [1,2,3]\n
