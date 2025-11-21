@@ -18,6 +18,7 @@ import { TreeNode } from "../common/treeNode.js";
  * }
  */
 /**
+ * v1 分解问题思想
  * @param {number[]} preorder
  * @param {number[]} inorder
  * @return {TreeNode}

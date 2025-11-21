@@ -16,42 +16,24 @@ import { TreeNode } from "../common/treeNode.js";
  * @return {number[]}
  */
 let corpFlightBookings = function (bookings, n) {
-  let diff = new Difference(new Array(n).fill(0));
-  for (let [left, right, value] of bookings) {
-    // 题目索引从 1 开始，这里要减去  1
-    diff.increment(left - 1, right - 1, value);
+  // 创建差分数组
+  const diff = new Array(n).fill(0);
+
+  // 进行区间计算
+  for (const [from, to, value] of bookings) {
+    diff[from - 1] += value;
+    diff[to] -= value;
   }
-  return diff.result();
+
+  // 还原数组
+  const answer = new Array(n).fill(0);
+  answer[0] = diff[0];
+  for (let i = 1; i < n; i++) {
+    answer[i] = diff[i] + answer[i - 1];
+  }
+  return answer;
 };
 
-class Difference {
-  constructor(nums) {
-    let diff = new Array(nums.length); // 差分数组
-    // 构造差分数组
-    diff[0] = nums[0];
-    for (let i = 1; i < diff.length; i++) {
-      diff[i] = nums[i] - nums[i - 1];
-    }
-    this.diff = diff;
-  }
-
-  increment(left, right, value) {
-    this.diff[left] += value;
-    if (right + 1 < this.diff.length) {
-      this.diff[right + 1] -= value;
-    }
-  }
-
-  result() {
-    // 重新构造原数组
-    let res = new Array(this.diff.length);
-    res[0] = this.diff[0];
-    for (let i = 1; i < res.length; i++) {
-      res[i] = res[i - 1] + this.diff[i];
-    }
-    return res;
-  }
-}
 // @lc code=end
 
 // your test code here

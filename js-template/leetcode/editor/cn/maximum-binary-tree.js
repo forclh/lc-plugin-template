@@ -18,6 +18,7 @@ import { TreeNode } from "../common/treeNode.js";
  * }
  */
 /**
+ * v1 分解问题的思想
  * @param {number[]} nums
  * @return {TreeNode}
  */
