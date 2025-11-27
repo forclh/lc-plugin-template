@@ -24,16 +24,18 @@ import { TreeNode } from "../common/treeNode.js";
  * @return {ListNode}
  */
 let getIntersectionNode = function (headA, headB) {
+  // p 指向 A 链表头结点，q 指向 B 链表头结点
   let p = headA;
   let q = headB;
 
   while (p !== q) {
+    // p 走一步，如果走到 A 链表末尾，转到 B 链表
     if (p === null) {
       p = headB;
     } else {
       p = p.next;
     }
-
+    // q 走一步，如果走到 B 链表末尾，转到 A 链表
     if (q === null) {
       q = headA;
     } else {

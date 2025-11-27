@@ -17,28 +17,19 @@ import { TreeNode } from "../common/treeNode.js";
  * }
  */
 /**
- * v1 迭代解法
+ * v1 递归解法(分解问题)
  * @param {ListNode} head
  * @return {ListNode}
  */
 let reverseList = function (head) {
+  // 定义：输入一个单链表的头节点，将该链表反转，返回头节点
   if (head === null || head.next === null) {
     return head;
   }
-  // 由于单链表的结构，至少要用三个指针才能完成迭代反转
-  // cur 是当前遍历的节点，pre 是 cur 的前驱结点，next 是 cur 的后继结点
-  let pre = null;
-  let cur = head;
-  while (cur !== null) {
-    let next = cur.next;
-    // 逐个结点反转
-    cur.next = pre;
-    // 更新指针位置
-    pre = cur;
-    cur = next;
-  }
-  // 返回反转后的头结点
-  return pre;
+  let last = reverseList(head.next);
+  head.next.next = head;
+  head.next = null;
+  return last;
 };
 // @lc code=end
 
