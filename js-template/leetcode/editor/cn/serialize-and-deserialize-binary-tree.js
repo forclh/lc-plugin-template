@@ -18,8 +18,7 @@ import { TreeNode } from "../common/treeNode.js";
  */
 
 /**
- * Encodes a tree to a single string.
- *
+ * v1 层序遍历进行编码
  * @param {TreeNode} root
  * @return {string}
  */
@@ -31,19 +30,15 @@ let serialize = function (root) {
   let queue = [];
   queue.push(root);
   while (queue.length !== 0) {
-    let sz = queue.length;
-    for (let i = 0; i < sz; i++) {
-      let curNode = queue.shift();
-      if (curNode === null) {
-        result.push("#");
-        continue;
-      }
-
-      result.push(curNode.val);
-
-      queue.push(curNode.left);
-      queue.push(curNode.right);
+    let curNode = queue.shift();
+    if (curNode === null) {
+      result.push("#");
+      continue;
     }
+    result.push(curNode.val);
+    // 入队
+    queue.push(curNode.left);
+    queue.push(curNode.right);
   }
 
   return result.join(",");
@@ -68,21 +63,18 @@ let deserialize = function (data) {
   let index = 1;
   // 层序遍历
   while (queue.length !== 0) {
-    let sz = queue.length;
-    for (let i = 0; i < sz; i++) {
-      let root = queue.shift();
-      // 为父节点构造左侧子节点
-      let leftVal = nodes[index++];
-      if (leftVal !== "#") {
-        root.left = new TreeNode(parseInt(leftVal));
-        queue.push(root.left);
-      }
-      // 为父节点构造右侧子节点
-      let rightVal = nodes[index++];
-      if (rightVal !== "#") {
-        root.right = new TreeNode(parseInt(rightVal));
-        queue.push(root.right);
-      }
+    let root = queue.shift();
+    // 为父节点构造左侧子节点
+    let leftVal = nodes[index++];
+    if (leftVal !== "#") {
+      root.left = new TreeNode(parseInt(leftVal));
+      queue.push(root.left);
+    }
+    // 为父节点构造右侧子节点
+    let rightVal = nodes[index++];
+    if (rightVal !== "#") {
+      root.right = new TreeNode(parseInt(rightVal));
+      queue.push(root.right);
     }
   }
 

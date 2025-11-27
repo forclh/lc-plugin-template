@@ -20,38 +20,28 @@ import { TreeNode } from "../common/treeNode.js";
  */
 
 /**
- * v1 层序遍历
+ * v1 遍历的思想
+ *
+ * 将二叉树中的空隙抽象为一颗三叉树
  * @param {_Node} root
  * @return {_Node}
  */
 let connect = function (root) {
-  if (root === null) {
-    return null;
-  }
-
-  let queue = [root];
-  while (queue.length > 0) {
-    let sz = queue.length;
-    let pre = null; // 保存当前层中的上一个节点
-    for (let i = 0; i < sz; i++) {
-      let curNode = queue.shift();
-      // 链接当前层所有节点的 next 指针
-      if (pre !== null) {
-        pre.next = curNode;
-      }
-      pre = curNode;
-
-      if (curNode.left !== null) {
-        queue.push(curNode.left);
-      }
-
-      if (curNode.right !== null) {
-        queue.push(curNode.right);
-      }
-    }
-  }
-
+  if (root === null) return null;
+  traverse(root.left, root.right);
   return root;
+
+  function traverse(node1, node2) {
+    if (node1 === null || node2 === null) return;
+
+    // 前序位置：连接下一个节点
+    node1.next = node2;
+
+    // 递归遍历
+    traverse(node1.left, node1.right);
+    traverse(node1.right, node2.left);
+    traverse(node2.left, node2.right);
+  }
 };
 // @lc code=end
 
