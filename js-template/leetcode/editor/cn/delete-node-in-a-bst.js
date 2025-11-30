@@ -19,6 +19,8 @@ import { TreeNode } from "../common/treeNode.js";
  */
 /**
  * v1 复杂的问题分情况讨论
+ *
+ * 定义：删除已root为根节点的BST中的节点key，返回新的根节点
  * @param {TreeNode} root
  * @param {number} key
  * @return {TreeNode}
@@ -37,8 +39,10 @@ let deleteNode = function (root, key) {
     else if (root.left !== null && root.right !== null) {
       // 找到右子树最小的节点（或者左子树最大的节点）
       let minNode = getMin(root.right);
-      // 把 root 改成 minNode
-      root.val = minNode.val;
+      //  用右子树最小的节点替换 root 节点
+      minNode.left = root.left;
+      minNode.right = root.right;
+      root = minNode;
       // 转而去删除 minNode
       root.right = deleteNode(root.right, minNode.val);
     } else {

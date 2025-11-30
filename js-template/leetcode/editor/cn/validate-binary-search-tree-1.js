@@ -1,8 +1,8 @@
 /*
- * @lc app=leetcode.cn id=230 lang=javascript
+ * @lc app=leetcode.cn id=98 lang=javascript
  * @lcpr version=30202
  *
- * [230] 二叉搜索树中第 K 小的元素
+ * [98] 验证二叉搜索树
  */
 
 import { ListNode } from "../common/listNode.js";
@@ -18,34 +18,30 @@ import { TreeNode } from "../common/treeNode.js";
  * }
  */
 /**
- * v1 使用BST中序遍历为升序的特点
- *
- * 时间复杂度 O(N)
+ * v1 中序遍历二叉树，判断是否严格递增
  * @param {TreeNode} root
- * @param {number} k
- * @return {number}
+ * @return {boolean}
  */
-let kthSmallest = function (root, k) {
-  // 记录结果
-  let result = 0;
-  let rank = 0;
+let isValidBST = function (root) {
+  let isBST = true;
+  let pre = null;
+
   function traverse(root) {
-    if (root === null) {
-      return;
-    }
+    if (root === null || !isBST) return;
 
     traverse(root.left);
-    // 中序位置
-    rank++;
-    if (rank === k) {
-      result = root.val;
+
+    if (pre !== null && root.val <= pre) {
+      isBST = false;
       return;
     }
+    pre = root.val;
     traverse(root.right);
   }
 
   traverse(root);
-  return result;
+
+  return isBST;
 };
 // @lc code=end
 
@@ -53,11 +49,11 @@ let kthSmallest = function (root, k) {
 
 /*
 // @lcpr case=start
-// [3,1,4,null,2]\n1\n
+// [2,1,3]\n
 // @lcpr case=end
 
 // @lcpr case=start
-// [5,3,6,2,4,null,null,1]\n3\n
+// [5,1,4,null,null,3,6]\n
 // @lcpr case=end
 
  */
