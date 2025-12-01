@@ -37,17 +37,14 @@ let canFinish = function (numCourses, prerequisites) {
   let count = 0;
   // 开始执行 BFS 循环
   while (queue.length !== 0) {
-    let sz = queue.length;
-    for (let i = 0; i < sz; i++) {
-      // 弹出节点 cur,并将它指向的节点入度 -1
-      let cur = queue.shift();
-      count++;
-      for (let next of graph[cur]) {
-        inDegree[next]--;
-        if (inDegree[next] === 0) {
-          // 如果入度变为 0，说明 next 依赖的节点都已被遍历,可以入队
-          queue.push(next);
-        }
+    // 弹出节点 cur,并将它指向的节点入度 -1
+    let cur = queue.shift();
+    count++;
+    for (let next of graph[cur]) {
+      inDegree[next]--;
+      if (inDegree[next] === 0) {
+        // 如果入度变为 0，说明 next 依赖的节点都已被遍历,可以入队
+        queue.push(next);
       }
     }
   }
