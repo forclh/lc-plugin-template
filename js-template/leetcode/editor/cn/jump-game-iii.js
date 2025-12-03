@@ -17,18 +17,17 @@ import { TreeNode } from "../common/treeNode.js";
  */
 const canReach = function (arr, start) {
   let n = arr.length;
-  const visitd = new Array(n).fill(false);
+  const visited = new Array(n).fill(false);
   let canArrive = false;
 
   const dfs = (start) => {
     // 索引越界、已经遍历过、已经找到了
-    if (start < 0 || start >= n || visitd[start] || canArrive) return;
-
-    visitd[start] = true;
-
+    if (start < 0 || start >= n || visited[start] || canArrive) return;
+    visited[start] = true;
     const step = arr[start];
-    if (step === 0) canArrive = true;
-
+    if (step === 0) {
+      canArrive = true;
+    }
     dfs(start - step);
     dfs(start + step);
   };
