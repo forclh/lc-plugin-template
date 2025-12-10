@@ -23,12 +23,12 @@ let canPartition = function (nums) {
   // 给一个可装载重量为 sum 的背包和 n 个物品，每个物品的重量为 nums[i]。
   // 是否存在一种装法，能够恰好将背包装满？
 
-  // dp[n][w]:背包可承载的重量为 w 的时候，从前 n 个物品中选取，是否可以装满背包
+  // dp[i][j]:背包可承载的重量为 j 的时候，从前 i 个物品中选取，是否可以刚好装满背包
   let dp = Array.from({ length: n + 1 }, () => new Array(sum + 1).fill(false));
 
   // base case
-  // n = 0 时 dp[n][w] = false 没有物品可选，无法装满（除0容量外）
-  // w = 0 时 dp[n][w] = true 背包没有容量，视作装满了
+  // i = 0 时 dp[0][j] = false 没有物品可选，无法装满（除0容量外）
+  // j = 0 时 dp[i][0] = true 背包没有容量，视作装满了
   for (let i = 0; i <= n; i++) {
     dp[i][0] = true;
   }
@@ -49,7 +49,7 @@ let canPartition = function (nums) {
 // @lc code=end
 
 // your test code here
-
+canPartition([2, 2, 1, 1]);
 /*
 // @lcpr case=start
 // [1,5,11,5]\n

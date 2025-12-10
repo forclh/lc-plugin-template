@@ -10,38 +10,27 @@ import { TreeNode } from "../common/treeNode.js";
 
 // @lc code=start
 /**
- * v1 动态规划（自顶向下）
+ * v2 动态规划(完全背包：自底向上+空间压缩)
  * @param {number[]} coins
  * @param {number} amount
  * @return {number}
  */
 let coinChange = function (coins, amount) {
-  // 备忘录初始化为一个不会被取到的特殊值，代表还未被计算
-  const memo = new Array(amount + 1).fill(-666);
-  return dp(amount);
-
-  // 定义：当金额为amount时返回最少的硬币数量
-  function dp(amount) {
-    // base case
-    if (amount === 0) return 0;
-    if (amount < 0) return -1;
-
-    // 备忘录
-    if (memo[amount] !== -666) {
-      return memo[amount];
+  // dp[i]代表总金额为 i 时需要的最少硬币数
+  // 因为最多硬币数量为amount，所以初始化为 amount + 1，相当于初始化为正无穷
+  let dp = new Array(amount + 1).fill(amount + 1);
+  // base case
+  dp[0] = 0;
+  // 遍历所有的硬币
+  for (let coin of coins) {
+    // 遍历总金额
+    for (let i = 1; i <= amount; i++) {
+      if (i - coin < 0) continue;
+      dp[i] = Math.min(dp[i], dp[i - coin] + 1);
     }
-
-    let min = Infinity;
-    // 遍历选择
-    for (const coin of coins) {
-      const sub = dp(amount - coin); // 子问题结果
-      if (sub === -1) continue; //  子问题无解则跳过
-      min = Math.min(min, sub + 1); // 在子问题中选择最优解，然后加一
-    }
-    // 把计算结果存入备忘录
-    memo[amount] = min === Infinity ? -1 : min;
-    return memo[amount];
   }
+
+  return dp[amount] === amount + 1 ? -1 : dp[amount];
 };
 
 // @lc code=end
