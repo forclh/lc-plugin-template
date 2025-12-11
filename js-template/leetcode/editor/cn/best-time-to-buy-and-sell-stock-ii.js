@@ -10,7 +10,7 @@
 
 // @lc code=start
 /**
- * v1 动态规划（自底向上）
+ * v1 动态规划（dp数组）
  * @param {number[]} prices
  * @return {number}
  */
@@ -22,9 +22,9 @@ let maxProfit = function (prices) {
   dp[0][0] = 0;
   dp[0][1] = -prices[0];
   for (let i = 1; i < n; i++) {
-    //第i天不持有股票： i - 1天不持有股票、第i - 1 天持有股票，但是第i天买了
+    // 第i天不持有股票： i - 1天不持有股票或者第i - 1 天持有股票，但是第i天卖了
     dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
-    // 第i天持有股票：i - 1天持有股票；第i - 1天不持有股票，但是第i天买了
+    // 第i天持有股票：i - 1天持有股票或者第i - 1天不持有股票，但是第i天买了
     dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);
   }
 

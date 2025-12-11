@@ -10,35 +10,33 @@
 
 // @lc code=start
 /**
- * v2 动态规划(自底向上 + 空间优化)
+ * v1 动态规划(自底向上)
  * @param {number[]} nums
  * @return {number}
  */
 let rob = function (nums) {
-  let n = nums.length;
+  const n = nums.length;
   if (n === 1) return nums[0];
-  if (n === 2) return Math.max(nums[0], nums[1]);
-
-  // dp[start][end]返回 nums[start, end]中能抢到的最大值
-  let dp = Array.from({ length: n + 1 }, () => new Array(n).fill(0));
-  // base case start===end
-  for (let i = 0; i < n; i++) {
-    dp[i][i] = nums[i];
-  }
-  // 从后往前遍历
-  for (let i = n - 2; i >= 0; i--) {
-    for (let j = i + 1; j < n; j++) {
-      dp[i][j] = Math.max(dp[i + 2][j] + nums[i], dp[i + 1][j]);
-    }
-  }
-
-  // 抢第一间房或者抢最后一间房
-  return Math.max(dp[0][n - 2], dp[1][n - 1]);
+  return Math.max(robRange(nums, 0, n - 2), robRange(nums, 1, n - 1));
 };
+
+// 参考题[198] 打家劫舍
+function robRange(nums, start, end) {
+  if (start > end) return 0;
+  if (start === end) return nums[start];
+  const n = nums.length;
+  const dp = new Array(n).fill(0);
+  dp[start] = nums[start];
+  dp[start + 1] = Math.max(nums[start], nums[start + 1]);
+  for (let i = start + 2; i <= end; i++) {
+    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+  }
+  return dp[end];
+}
 // @lc code=end
 
 // your test code here
-rob([200, 3, 140, 20, 10]);
+rob([2, 3, 2]);
 /*
 // @lcpr case=start
 // [2,3,2]\n

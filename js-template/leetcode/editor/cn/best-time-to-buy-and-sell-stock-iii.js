@@ -10,33 +10,45 @@
 
 // @lc code=start
 /**
- * v1 动态规划（自底向上）
+ * v1 动态规划
  * @param {number[]} prices
  * @return {number}
  */
 let maxProfit = function (prices) {
   let n = prices.length;
-  // 1 表示持有股票，0 表示不持有股票
-  // dp[i][k][1]或者dp[i][k][0]分别表示，第i天、最大交易次数为k且是否持有股票的最大利润
+  // 定义状态：
+  // dp[i][k][0]: 第 i 天，至多进行了 k 次交易，且当前【不持有】股票（卖出状态）
+  // dp[i][k][1]: 第 i 天，至多进行了 k 次交易，且当前【持有】股票（买入状态）
   let dp = Array.from({ length: n }, () =>
     Array.from({ length: 3 }, () => new Array(2).fill(0))
   );
 
-  for (let i = 0; i < n; i++) {
+  // 初始化
+  for (let k = 1; k <= 2; k++) {
+    dp[0][k][0] = 0;
+    dp[0][k][1] = -prices[0]; // 第一天买入，成本为 prices[0]
+  }
+
+  for (let i = 1; i < n; i++) {
     for (let k = 1; k <= 2; k++) {
-      if (i === 0) {
-        dp[i][k][0] = 0;
-        dp[i][k][1] = -prices[i];
-        continue;
-      }
-      //
+      // 状态转移方程解释：
+      // 1. 今天【不持有】股票 (dp[i][k][0])
+      //    可能性 A: 昨天就不持有 (dp[i-1][k][0]) -> 保持现状
+      //    可能性 B: 昨天持有，今天卖出了 (dp[i-1][k][1] + prices[i]) -> 完成了一次交易
       dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
-      dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]); // 买的时候交易次数要减一
+
+      // 2. 今天【持有】股票 (dp[i][k][1])
+      //    可能性 A: 昨天就持有 (dp[i-1][k][1]) -> 保持现状
+      //    可能性 B: 昨天不持有，今天买入了 (dp[i-1][k-1][0] - prices[i]) -> 开始第 k 次交易
+      //    注意：买入是交易的开始，所以我们要从 k-1 (上一轮交易完成) 的状态转移过来
+      dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
     }
   }
 
+  // 返回最后一天，至多交易 2 次，且不持有股票的最大利润
   return dp[n - 1][2][0];
 };
+
 // @lc code=end
 
 // your test code here

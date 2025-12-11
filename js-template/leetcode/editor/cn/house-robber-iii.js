@@ -23,26 +23,23 @@ import { TreeNode } from "../common/treeNode.js";
  * @return {number}
  */
 let rob = function (root) {
-  // 返回一个数组arr:
-  // arr[0]表示抢root,得到的最大钱数
-  // arr[1]:表示不抢root得到的最大钱数
-  let _rob = function (root) {
-    if (root === null) return [0, 0];
-
-    let left = _rob(root.left);
-    let right = _rob(root.right);
-
-    /// 不抢，下家可抢可不抢，取决于收益大小
-    let doIt = root.val + left[1] + right[1];
-    // 不抢，下家可抢可不抢，取决于收益大小
-    let notDo = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
-
-    return [doIt, notDo];
-  };
-
   let res = _rob(root);
-
   return Math.max(res[0], res[1]);
+};
+
+// 返回一个数组arr:
+// arr[0]表示抢root,得到的最大钱数
+// arr[1]:表示不抢root得到的最大钱数
+let _rob = function (root) {
+  if (root === null) return [0, 0];
+  let left = _rob(root.left);
+  let right = _rob(root.right);
+  /// 抢当前节点，下家不可抢
+  let doIt = root.val + left[1] + right[1];
+  // 不抢，下家可抢可不抢，取决于收益大小
+  let notDo = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+
+  return [doIt, notDo];
 };
 // @lc code=end
 
