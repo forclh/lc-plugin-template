@@ -10,20 +10,22 @@
 
 // @lc code=start
 /**
- * v1 动态规划-子序列问题（自底向上）
+ * v1 动态规划(子序列问题：dp数组)
  * @param {string} s
  * @return {number}
  */
 let longestPalindromeSubseq = function (s) {
   let n = s.length;
-  // dp[i][j]为s[i,...,j]中的最长子序列的长度
+  // dp[i][j]为s[i,...,j]中的最长回文子序列的长度
   let dp = Array.from({ length: n }, () => new Array(n).fill(0));
   // base case dp[i][j] = 1 (i === j)
   for (let i = 0; i < n; i++) {
     dp[i][i] = 1;
   }
-  // 反着遍历保证正确的状态转移
+  // 遍历顺序取决于递推公式
+  // dp[i][j]依赖于左下角的状态，因此需要从下往上，从左往右遍历
   for (let i = n - 1; i >= 0; i--) {
+    // 这里j=i+1是因为j=i的情况已经初始化过了
     for (let j = i + 1; j < n; j++) {
       // 状态转移方程
       if (s[i] === s[j]) {

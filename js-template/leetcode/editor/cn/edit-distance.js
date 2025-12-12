@@ -18,15 +18,14 @@ import { TreeNode } from "../common/treeNode.js";
 let minDistance = function (word1, word2) {
   let m = word1.length;
   let n = word2.length;
-  // 定义 dp[i][j]为将s1[0,...,i-1]替换为s2[0,...,j-1]的最小操作数
+  // 定义 dp[i][j]为将s1[0,...,i-1]转换为s2[0,...,j-1]的最小操作数
   let dp = Array.from({ length: m + 1 }, () => new Array(n + 1)); // 注意dp数组的尺寸
 
   // base case 初始化
-  dp[0][0] = 0;
-  for (let i = 1; i <= n; i++) {
+  for (let i = 0; i <= n; i++) {
     dp[0][i] = i;
   }
-  for (let i = 1; i <= m; i++) {
+  for (let i = 0; i <= m; i++) {
     dp[i][0] = i;
   }
 
