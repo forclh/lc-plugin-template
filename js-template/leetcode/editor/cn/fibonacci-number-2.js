@@ -10,28 +10,26 @@ import { TreeNode } from "../common/treeNode.js";
 
 // @lc code=start
 /**
- * v1 动态规划（自顶向下+备忘录）
+ * v2 动态规划（自底向上+空间压缩）
  *
  * 时间复杂度：O(n)
- * 空间复杂度：O(n)
+ * 空间复杂度：O(1)
  * @param {number} n
  * @return {number}
  */
 let fib = function (n) {
-  const memo = new Array(n + 1).fill(-1);
-  return dp(n, memo);
-};
+  if (n === 0 || n === 1) return n;
+  // base case
+  let dp1 = 0;
+  let dp2 = 1;
 
-// dp(n)表示第n个斐波那契数
-function dp(n, memo) {
-  // 初始化
-  if (n < 2) return n;
-  if (memo[n] !== -1) {
-    return memo[n];
+  // 状态转移
+  for (let i = 2; i < n + 1; i++) {
+    dp = dp2 + dp1;
+    [dp2, dp1] = [dp, dp2];
   }
-  memo[n] = dp(n - 1, memo) + dp(n - 2, memo);
-  return memo[n];
-}
+  return dp;
+};
 
 // @lc code=end
 
